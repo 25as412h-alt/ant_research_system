@@ -5,6 +5,8 @@ import tkinter as tk
 from tkinter import ttk
 from models.parent_site import ParentSite
 from models.survey_site import SurveySite
+from models.survey_event import SurveyEvent
+from models.ant_record import AntRecord
 
 
 class ViewTab:
@@ -21,6 +23,8 @@ class ViewTab:
         self.conn = db_connection
         self.parent_site_model = ParentSite(db_connection)
         self.survey_site_model = SurveySite(db_connection)
+        self.survey_event_model = SurveyEvent(db_connection)
+        self.ant_record_model = AntRecord(db_connection)
         
         # メインフレーム
         self.frame = ttk.Frame(parent)
@@ -35,17 +39,11 @@ class ViewTab:
         # 調査地一覧タブ
         self._create_survey_site_tab()
         
-        # 調査イベント一覧タブ（Phase 2で実装）
-        event_frame = ttk.Frame(self.sub_notebook)
-        self.sub_notebook.add(event_frame, text='調査イベント')
-        ttk.Label(event_frame, text='Phase 2 で実装予定',
-                 font=('Yu Gothic UI', 12)).pack(pady=50)
+        # 調査イベント一覧タブ
+        self._create_survey_event_tab()
         
-        # アリ類出現記録タブ（Phase 2で実装）
-        ant_frame = ttk.Frame(self.sub_notebook)
-        self.sub_notebook.add(ant_frame, text='アリ類出現記録')
-        ttk.Label(ant_frame, text='Phase 2 で実装予定',
-                 font=('Yu Gothic UI', 12)).pack(pady=50)
+        # アリ類出現記録タブ
+        self._create_ant_record_tab()
     
     def _create_parent_site_tab(self):
         """親調査地一覧タブを作成"""
@@ -335,3 +333,209 @@ class ViewTab:
         if selection:
             # 今後、詳細ウィンドウを実装
             pass
+    
+    def _create_survey_event_tab(self):
+        """調査イベント一覧タブを作成"""
+        tab = ttk.Frame(self.sub_notebook)
+        self.sub_notebook.add(tab, text='調査イベント')
+        
+        # ツールバー
+        toolbar = ttk.Frame(tab)
+        toolbar.pack(fill='x', padx=10, pady=5)
+        
+        ttk.Label(toolbar, text='期間:', style='Header.TLabel').pack(side='left', padx=5)
+        
+        # 日付フィルタは簡略化
+        ttk.Button(toolbar, text='🔄 更新', 
+                  command=self._refresh_events).pack(side='left', padx=5)
+        
+        self.event_stats_label = ttk.Label(toolbar, text='')
+        self.event_stats_label.pack(side='right', padx=10)
+        
+        # Treeview
+        tree_frame = ttk.Frame(tab)
+        tree_frame.pack(fill='both', expand=True, padx=10, pady=5)
+        
+        v_scrollbar = ttk.Scrollbar(tree_frame, orient='vertical')
+        v_scrollbar.pack(side='right', fill='y')
+        
+        self.event_tree = ttk.Treeview(
+            tree_frame,
+            columns=('id', 'date', 'parent_site', 'site', 'surveyor', 'weather', 'temp'),
+            show='headings',
+            yscrollcommand=v_scrollbar.set
+        )
+        
+        v_scrollbar.config(command=self.event_tree.yview)
+        
+        columns_config = {
+            'id': ('ID', 50),
+            'date': ('調査日時', 150),
+            'parent_site': ('親調査地', 150),
+            'site': ('調査地', 150),
+            'surveyor': ('調査者', 100),
+            'weather': ('天候', 80),
+            'temp': ('気温(℃)', 80)
+        }
+        
+        for col, (heading, width) in columns_config.items():
+            self.event_tree.heading(col, text=heading)
+            self.event_tree.column(col, width=width)
+        
+        self.event_tree.pack(fill='both', expand=True)
+        
+        self._refresh_events()
+    
+    def _create_ant_record_tab(self):
+        """アリ類出現記録タブを作成"""
+        tab = ttk.Frame(self.sub_notebook)
+        self.sub_notebook.add(tab, text='アリ類出現記録')
+        
+        # ツールバー
+        toolbar = ttk.Frame(tab)
+        toolbar.pack(fill='x', padx=10, pady=5)
+        
+        ttk.Button(toolbar, text='🔄 更新', 
+                  command=self._refresh_ant_records).pack(side='left', padx=5)
+        ttk.Button(toolbar, text='📊 種別統計', 
+                  command=self._show_species_stats).pack(side='left', padx=5)
+        
+        self.ant_stats_label = ttk.Label(toolbar, text='')
+        self.ant_stats_label.pack(side='right', padx=10)
+        
+        # Treeview
+        tree_frame = ttk.Frame(tab)
+        tree_frame.pack(fill='both', expand=True, padx=10, pady=5)
+        
+        v_scrollbar = ttk.Scrollbar(tree_frame, orient='vertical')
+        v_scrollbar.pack(side='right', fill='y')
+        
+        self.ant_tree = ttk.Treeview(
+            tree_frame,
+            columns=('id', 'date', 'site', 'species', 'genus', 'count'),
+            show='headings',
+            yscrollcommand=v_scrollbar.set
+        )
+        
+        v_scrollbar.config(command=self.ant_tree.yview)
+        
+        columns_config = {
+            'id': ('ID', 50),
+            'date': ('調査日', 100),
+            'site': ('調査地', 200),
+            'species': ('種名', 200),
+            'genus': ('属', 120),
+            'count': ('個体数', 80)
+        }
+        
+        for col, (heading, width) in columns_config.items():
+            self.ant_tree.heading(col, text=heading)
+            self.ant_tree.column(col, width=width)
+        
+        self.ant_tree.pack(fill='both', expand=True)
+        
+        self._refresh_ant_records()
+    
+    def _refresh_events(self):
+        """調査イベント一覧を更新"""
+        for item in self.event_tree.get_children():
+            self.event_tree.delete(item)
+        
+        events = self.survey_event_model.get_all()
+        
+        for event in events:
+            self.event_tree.insert('', 'end', values=(
+                event['id'],
+                event['survey_date'],
+                event['parent_site_name'],
+                event['site_name'],
+                event['surveyor_name'] or '',
+                event['weather'] or '',
+                event['temperature'] if event['temperature'] else ''
+            ))
+        
+        self.event_stats_label.config(text=f'調査イベント: {len(events)}件')
+    
+    def _refresh_ant_records(self):
+        """アリ類出現記録を更新"""
+        for item in self.ant_tree.get_children():
+            self.ant_tree.delete(item)
+        
+        records = self.ant_record_model.get_all()
+        
+        for record in records:
+            self.ant_tree.insert('', 'end', values=(
+                record['id'],
+                record['survey_date'][:10],  # 日付のみ
+                record['site_name'],
+                record['species_name'],
+                record.get('genus', ''),
+                record['count']
+            ))
+        
+        total_records = len(records)
+        total_individuals = sum(r['count'] for r in records)
+        self.ant_stats_label.config(
+            text=f'記録: {total_records}件  総個体数: {total_individuals}'
+        )
+    
+    def _show_species_stats(self):
+        """種別統計を表示"""
+        from tkinter import messagebox
+        
+        stats = self.ant_record_model.get_species_frequency()
+        
+        if not stats:
+            messagebox.showinfo('情報', '出現記録がありません')
+            return
+        
+        # 新しいウィンドウで表示
+        stats_window = tk.Toplevel()
+        stats_window.title('種別出現統計')
+        stats_window.geometry('700x500')
+        
+        ttk.Label(stats_window, text='種別出現統計', 
+                 font=('Yu Gothic UI', 14, 'bold')).pack(pady=10)
+        
+        tree_frame = ttk.Frame(stats_window)
+        tree_frame.pack(fill='both', expand=True, padx=10, pady=10)
+        
+        scrollbar = ttk.Scrollbar(tree_frame)
+        scrollbar.pack(side='right', fill='y')
+        
+        stats_tree = ttk.Treeview(
+            tree_frame,
+            columns=('species', 'genus', 'sites', 'occurrences', 'total', 'avg'),
+            show='headings',
+            yscrollcommand=scrollbar.set
+        )
+        scrollbar.config(command=stats_tree.yview)
+        
+        stats_tree.heading('species', text='種名')
+        stats_tree.heading('genus', text='属')
+        stats_tree.heading('sites', text='出現地点数')
+        stats_tree.heading('occurrences', text='出現回数')
+        stats_tree.heading('total', text='総個体数')
+        stats_tree.heading('avg', text='平均個体数')
+        
+        stats_tree.column('species', width=180)
+        stats_tree.column('genus', width=100)
+        stats_tree.column('sites', width=100)
+        stats_tree.column('occurrences', width=100)
+        stats_tree.column('total', width=100)
+        stats_tree.column('avg', width=100)
+        
+        for stat in stats:
+            stats_tree.insert('', 'end', values=(
+                stat['species_name'],
+                stat['genus'] or '',
+                stat['site_count'],
+                stat['occurrence_count'],
+                stat['total_count'],
+                f"{stat['avg_count']:.1f}"
+            ))
+        
+        stats_tree.pack(fill='both', expand=True)
+        
+        ttk.Button(stats_window, text='閉じる', 
+                  command=stats_window.destroy).pack(pady=10)
