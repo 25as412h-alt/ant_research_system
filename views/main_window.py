@@ -118,7 +118,7 @@ class MainWindow:
     
     def _create_tabs(self):
         """タブを作成"""
-        # Phase 1: 入力・閲覧タブのみ実装
+        # Phase 1: 入力・閲覧タブ
         from views.input_tab import InputTab
         from views.view_tab import ViewTab
         
@@ -131,11 +131,9 @@ class MainWindow:
         self.notebook.add(self.view_tab.frame, text='📋 データ閲覧')
         
         # 解析タブ（Phase 3で実装）
-        analysis_frame = ttk.Frame(self.notebook)
-        self.notebook.add(analysis_frame, text='📊 解析・出力')
-        ttk.Label(analysis_frame, 
-                 text='解析機能は Phase 3 で実装予定です',
-                 font=('Yu Gothic UI', 12)).pack(pady=50)
+        from views.analysis_tab import AnalysisTab
+        self.analysis_tab = AnalysisTab(self.notebook, self.conn)
+        self.notebook.add(self.analysis_tab.frame, text='📊 解析・出力')
         
         # 地図タブ（Phase 4で実装）
         map_frame = ttk.Frame(self.notebook)
