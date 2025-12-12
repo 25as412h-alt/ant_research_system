@@ -46,7 +46,10 @@ class InputTab:
         self._create_survey_site_tab()
         
         # 調査イベント入力タブ
-        self._create_survey_event_tab()
+        from views.input_tab_phase2 import create_survey_event_tab
+        create_survey_event_tab(self.sub_notebook, self.conn, 
+                               {'event': self.survey_event_model, 
+                                'site': self.survey_site_model})
         
         # 植生データ入力タブ
         from views.input_tab_phase2 import create_vegetation_tab
@@ -60,16 +63,6 @@ class InputTab:
                            {'ant': self.ant_record_model,
                             'species': self.species_model,
                             'event': self.survey_event_model})
-
-    def _create_survey_event_tab(self):
-        """調査イベント入力タブを作成（互換性対応用）"""
-        try:
-            from views.input_tab_phase2 import create_survey_event_tab
-            create_survey_event_tab(self.sub_notebook, self.conn, 
-                                   {'event': self.survey_event_model,
-                                    'site': self.survey_site_model})
-        except Exception:
-            pass
     
     def _create_parent_site_tab(self):
         """親調査地入力タブを作成"""
