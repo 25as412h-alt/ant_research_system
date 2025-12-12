@@ -141,11 +141,9 @@ class MainWindow:
         self.notebook.add(self.map_tab.frame, text='🗺️ 地図')
         
         # 設定タブ（Phase 5で実装）
-        settings_frame = ttk.Frame(self.notebook)
-        self.notebook.add(settings_frame, text='⚙️ 設定')
-        ttk.Label(settings_frame, 
-                 text='設定機能は Phase 5 で実装予定です',
-                 font=('Yu Gothic UI', 12)).pack(pady=50)
+        from views.settings_tab import SettingsTab
+        self.settings_tab = SettingsTab(self.notebook, self.conn)
+        self.notebook.add(self.settings_tab.frame, text='⚙️ 設定')
     
     def _create_statusbar(self):
         """ステータスバーを作成"""
