@@ -136,11 +136,9 @@ class MainWindow:
         self.notebook.add(self.analysis_tab.frame, text='📊 解析・出力')
         
         # 地図タブ（Phase 4で実装）
-        map_frame = ttk.Frame(self.notebook)
-        self.notebook.add(map_frame, text='🗺️ 地図')
-        ttk.Label(map_frame, 
-                 text='地図機能は Phase 4 で実装予定です',
-                 font=('Yu Gothic UI', 12)).pack(pady=50)
+        from views.map_tab import MapTab
+        self.map_tab = MapTab(self.notebook, self.conn)
+        self.notebook.add(self.map_tab.frame, text='🗺️ 地図')
         
         # 設定タブ（Phase 5で実装）
         settings_frame = ttk.Frame(self.notebook)
