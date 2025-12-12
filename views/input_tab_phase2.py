@@ -207,19 +207,26 @@ def create_vegetation_tab(parent, conn, models):
     veg_model = Vegetation(conn)
     event_model = SurveyEvent(conn)
     
-    # 全画面化を実現するため、タブを左右2パネルのペインドウとして構成する
-    paned_root = ttk.Panedwindow(tab, orient='horizontal')
-    paned_root.pack(fill='both', expand=True)
-
-    left_pane = ttk.Frame(paned_root)
-    right_pane = ttk.Frame(paned_root)
-    paned_root.add(left_pane, weight=1)
-    paned_root.add(right_pane, weight=1)
-
-    # 左側：入力フォームエリア（従来のコンテンツを移植）
-    content_frame = ttk.Frame(left_pane)
+    # スクロール可能なフレーム
+    canvas = tk.Canvas(tab)
+    scrollbar = ttk.Scrollbar(tab, orient='vertical', command=canvas.yview)
+    scrollable_frame = ttk.Frame(canvas)
+    
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+    
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+    
+    canvas.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+    
+    # 内容
+    content_frame = ttk.Frame(scrollable_frame)
     content_frame.pack(fill='both', expand=True, padx=20, pady=20)
-
+    
     ttk.Label(content_frame, text='植生データの入力', 
              style='Header.TLabel').pack(anchor='w', pady=(0, 10))
     
@@ -416,114 +423,6 @@ def create_vegetation_tab(parent, conn, models):
     ttk.Button(button_frame, text='登録', command=save_vegetation).pack(side='left', padx=5)
     ttk.Button(button_frame, text='クリア', command=clear_form).pack(side='left', padx=5)
     
-    # 右側：登録済みデータの一覧
-    list_frame = right_pane
-    ttk.Label(list_frame, text='登録済み植生データ', style='Header.TLabel').pack(anchor='w', pady=(0, 10))
-    tree_frame = ttk.Frame(list_frame)
-    tree_frame.pack(fill='both', expand=True)
-
-    tree_scroll = ttk.Scrollbar(tree_frame)
-    tree_scroll.pack(side='right', fill='y')
-
-    vegetation_tree = ttk.Treeview(tree_frame,
-                                   columns=('id', 'survey_date', 'site_name', 'parent_site_name'),
-                                   show='headings',
-                                   yscrollcommand=tree_scroll.set)
-    vegetation_tree.heading('id', text='ID')
-    vegetation_tree.heading('survey_date', text='調査日')
-    vegetation_tree.heading('site_name', text='サイト')
-    vegetation_tree.heading('parent_site_name', text='親サイト')
-    vegetation_tree.column('id', width=60)
-    vegetation_tree.column('survey_date', width=150)
-    vegetation_tree.column('site_name', width=200)
-    vegetation_tree.column('parent_site_name', width=200)
-    vegetation_tree.pack(fill='both', expand=True)
-    tree_scroll.config(command=vegetation_tree.yview)
-
-    def refresh_vegetation_list():
-        """植生データ一覧をリフレッシュ"""
-        vegetation_tree.delete(*vegetation_tree.get_children())
-        try:
-            for v in veg_model.get_all():
-                vegetation_tree.insert('', 'end', values=(
-                    v.get('id'),
-                    v.get('survey_date'),
-                    v.get('site_name'),
-                    v.get('parent_site_name')
-                ))
-        except Exception:
-            pass
-
-    refresh_vegetation_list()
-
-    def save_vegetation():
-        """植生データを保存"""
-        try:
-            event_key = event_var.get()
-            if not event_key:
-                messagebox.showwarning('入力エラー', '調査イベントを選択してください')
-                return
-            
-            event_id = event_dict.get(event_key)
-            
-            # 既に植生データが登録されているかチェック
-            existing = any((v.get('survey_event_id') == event_id) for v in veg_model.get_all())
-            if existing:
-                if not messagebox.askyesno('確認', 
-                    'この調査イベントには既に植生データが登録されています。\n上書きしますか？'):
-                    return
-
-            # バリデーション
-            data = {}
-            for field in ['dominant_tree', 'dominant_sasa', 'dominant_herb', 'litter_type']:
-                val = vars_dict[field].get().strip()
-                data[field] = val if val else None
-            for field in ['basal_area', 'avg_tree_height', 'avg_herb_height', 'soil_temperature']:
-                val = vars_dict[field].get().strip()
-                if val:
-                    is_valid, num, msg = Validators.validate_positive_number(val, field)
-                    if not is_valid:
-                        messagebox.showerror('入力エラー', msg)
-                        return
-                    data[field] = num
-                else:
-                    data[field] = None
-            for field in ['canopy_coverage', 'sasa_coverage', 'herb_coverage', 'litter_coverage']:
-                val = vars_dict[field].get().strip()
-                if val:
-                    is_valid, num, msg = Validators.validate_percentage(val, field)
-                    if not is_valid:
-                        messagebox.showerror('入力エラー', msg)
-                        return
-                    data[field] = num
-                else:
-                    data[field] = None
-            for field in ['light_condition', 'soil_moisture', 'vegetation_complexity']:
-                val = vars_dict[field].get().strip()
-                if val:
-                    is_valid, num, msg = Validators.validate_scale_1_to_5(val, field)
-                    if not is_valid:
-                        messagebox.showerror('入力エラー', msg)
-                        return
-                    data[field] = num
-                else:
-                    data[field] = None
-            veg_id = veg_model.create(survey_event_id=event_id, **data)
-            messagebox.showinfo('成功', f'植生データを登録しました（ID: {veg_id}）')
-            clear_form()
-            refresh_vegetation_list()
-        except Exception as e:
-            messagebox.showerror('エラー', f'保存に失敗しました：{e}')
-    
-    def clear_form():
-        """フォームをクリア"""
-        event_var.set('')
-        for var in vars_dict.values():
-            var.set('')
-    
-    # 右ペインのフォームを保持するためのイベント・フォーム構成を左右で整える
-    # 右ペインのリフレッシュは save_vegetation の後に実行されるように設定
-
     return tab
 
 
