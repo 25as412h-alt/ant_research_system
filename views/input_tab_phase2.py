@@ -48,7 +48,7 @@ def create_survey_event_tab(parent, conn, models):
     
     date_var = tk.StringVar(value=datetime.now().strftime('%Y-%m-%d'))
     ttk.Entry(date_frame, textvariable=date_var, width=15).pack(side='left')
-    ttk.Label(date_frame, text='時刻:', padx=(10, 5)).pack(side='left')
+    ttk.Label(date_frame, text='時刻:').pack(side='left', padx=(10, 5))
     time_var = tk.StringVar(value='09:00')
     ttk.Entry(date_frame, textvariable=time_var, width=8).pack(side='left')
     
