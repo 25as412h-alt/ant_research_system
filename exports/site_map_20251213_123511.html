@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_f6c10f2779340abc87730063c6cb7557 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_f6c10f2779340abc87730063c6cb7557" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_f6c10f2779340abc87730063c6cb7557 = L.map(
+                "map_f6c10f2779340abc87730063c6cb7557",
+                {
+                    center: [35.234099710526316, 135.74090964035088],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 10,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_03fa314566d0ba7ded8159fe2301522b = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_03fa314566d0ba7ded8159fe2301522b.addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var marker_6982aa9ab071268493b0c082a3354e9e = L.marker(
+                [33.729986, 133.036508],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_b7d215f99ef47c0f87e26957a803a821 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9e5d8be0768f38dec4e75568cc52822f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4207410dfa505a6126f6797e0d9adbe5 = $(`<div id="html_4207410dfa505a6126f6797e0d9adbe5" style="width: 100.0%; height: 100.0%;"><b>四国_海岸地点01</b><br>親調査地</div>`)[0];
+                popup_9e5d8be0768f38dec4e75568cc52822f.setContent(html_4207410dfa505a6126f6797e0d9adbe5);
+            
+        
+
+        marker_6982aa9ab071268493b0c082a3354e9e.bindPopup(popup_9e5d8be0768f38dec4e75568cc52822f)
+        ;
+
+        
+    
+    
+            marker_6982aa9ab071268493b0c082a3354e9e.bindTooltip(
+                `<div>
+                     四国_海岸地点01
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6982aa9ab071268493b0c082a3354e9e.setIcon(icon_b7d215f99ef47c0f87e26957a803a821);
+            
+    
+            var marker_7b74c57d60dca627aaa0876e2981681b = L.marker(
+                [35.508045, 137.943677],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_9594ce9b9f6fbfcb9dc63686d6bf3254 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_81ecdbece4878b2fb8ce59209b09b60c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1c88ec45d54899465f2c195ec4420365 = $(`<div id="html_1c88ec45d54899465f2c195ec4420365" style="width: 100.0%; height: 100.0%;"><b>中部_河川敷地点02</b><br>親調査地</div>`)[0];
+                popup_81ecdbece4878b2fb8ce59209b09b60c.setContent(html_1c88ec45d54899465f2c195ec4420365);
+            
+        
+
+        marker_7b74c57d60dca627aaa0876e2981681b.bindPopup(popup_81ecdbece4878b2fb8ce59209b09b60c)
+        ;
+
+        
+    
+    
+            marker_7b74c57d60dca627aaa0876e2981681b.bindTooltip(
+                `<div>
+                     中部_河川敷地点02
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7b74c57d60dca627aaa0876e2981681b.setIcon(icon_9594ce9b9f6fbfcb9dc63686d6bf3254);
+            
+    
+            var marker_a36587cca2a299bc6c6cd3e12dd875e9 = L.marker(
+                [33.95478, 133.294901],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_3cdbf4a1fa3852d8434f4826086fdb05 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_37511eb8f4ce3def5a6074e09ef6a87b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0d376236b326c2edd36041f5bacdf876 = $(`<div id="html_0d376236b326c2edd36041f5bacdf876" style="width: 100.0%; height: 100.0%;"><b>四国_森林地点03</b><br>親調査地</div>`)[0];
+                popup_37511eb8f4ce3def5a6074e09ef6a87b.setContent(html_0d376236b326c2edd36041f5bacdf876);
+            
+        
+
+        marker_a36587cca2a299bc6c6cd3e12dd875e9.bindPopup(popup_37511eb8f4ce3def5a6074e09ef6a87b)
+        ;
+
+        
+    
+    
+            marker_a36587cca2a299bc6c6cd3e12dd875e9.bindTooltip(
+                `<div>
+                     四国_森林地点03
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a36587cca2a299bc6c6cd3e12dd875e9.setIcon(icon_3cdbf4a1fa3852d8434f4826086fdb05);
+            
+    
+            var marker_56a3a62c2ac9db9f218b66bc583b9689 = L.marker(
+                [38.48091, 140.598305],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_6c2a344a97e5d767c83b9a41aecf4b52 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0c43290be43ffa818b72d7a1b0ff455b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_95240fe0fb714c7b0e56dc4f859072bb = $(`<div id="html_95240fe0fb714c7b0e56dc4f859072bb" style="width: 100.0%; height: 100.0%;"><b>東北_河川敷地点04</b><br>親調査地</div>`)[0];
+                popup_0c43290be43ffa818b72d7a1b0ff455b.setContent(html_95240fe0fb714c7b0e56dc4f859072bb);
+            
+        
+
+        marker_56a3a62c2ac9db9f218b66bc583b9689.bindPopup(popup_0c43290be43ffa818b72d7a1b0ff455b)
+        ;
+
+        
+    
+    
+            marker_56a3a62c2ac9db9f218b66bc583b9689.bindTooltip(
+                `<div>
+                     東北_河川敷地点04
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_56a3a62c2ac9db9f218b66bc583b9689.setIcon(icon_6c2a344a97e5d767c83b9a41aecf4b52);
+            
+    
+            var marker_025f680a7f553dc9bf56695557943dfb = L.marker(
+                [34.949796, 135.984403],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_0b928376076bc0973154ee759b4c0972 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_18918698c713da96dd18bcd94a7f952d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c830f52ea6e3fd4b55cc7195e88ef4b8 = $(`<div id="html_c830f52ea6e3fd4b55cc7195e88ef4b8" style="width: 100.0%; height: 100.0%;"><b>近畿_平地地点05</b><br>親調査地</div>`)[0];
+                popup_18918698c713da96dd18bcd94a7f952d.setContent(html_c830f52ea6e3fd4b55cc7195e88ef4b8);
+            
+        
+
+        marker_025f680a7f553dc9bf56695557943dfb.bindPopup(popup_18918698c713da96dd18bcd94a7f952d)
+        ;
+
+        
+    
+    
+            marker_025f680a7f553dc9bf56695557943dfb.bindTooltip(
+                `<div>
+                     近畿_平地地点05
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_025f680a7f553dc9bf56695557943dfb.setIcon(icon_0b928376076bc0973154ee759b4c0972);
+            
+    
+            var marker_b285ea7f3b60d466cc57888158984779 = L.marker(
+                [32.735585, 130.276716],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_0345dc83e72496f2f87389f84fc69fe7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d8eecdbfbf0594b580c957a304c1ea6e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_90a11f7090011e56f18f5b40dbf6ce54 = $(`<div id="html_90a11f7090011e56f18f5b40dbf6ce54" style="width: 100.0%; height: 100.0%;"><b>九州_山地地点06</b><br>親調査地</div>`)[0];
+                popup_d8eecdbfbf0594b580c957a304c1ea6e.setContent(html_90a11f7090011e56f18f5b40dbf6ce54);
+            
+        
+
+        marker_b285ea7f3b60d466cc57888158984779.bindPopup(popup_d8eecdbfbf0594b580c957a304c1ea6e)
+        ;
+
+        
+    
+    
+            marker_b285ea7f3b60d466cc57888158984779.bindTooltip(
+                `<div>
+                     九州_山地地点06
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b285ea7f3b60d466cc57888158984779.setIcon(icon_0345dc83e72496f2f87389f84fc69fe7);
+            
+    
+            var marker_07c4f182ebb7568e07a4be4d9fe2fdd9 = L.marker(
+                [35.1374, 135.372769],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_71c24823b4ee33889b7b0de11f63a1aa = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6329f765463ff65bdd06172aa94fe3e6 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c725714801c5ae333460b92a2f80619c = $(`<div id="html_c725714801c5ae333460b92a2f80619c" style="width: 100.0%; height: 100.0%;"><b>近畿_海岸地点07</b><br>親調査地</div>`)[0];
+                popup_6329f765463ff65bdd06172aa94fe3e6.setContent(html_c725714801c5ae333460b92a2f80619c);
+            
+        
+
+        marker_07c4f182ebb7568e07a4be4d9fe2fdd9.bindPopup(popup_6329f765463ff65bdd06172aa94fe3e6)
+        ;
+
+        
+    
+    
+            marker_07c4f182ebb7568e07a4be4d9fe2fdd9.bindTooltip(
+                `<div>
+                     近畿_海岸地点07
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_07c4f182ebb7568e07a4be4d9fe2fdd9.setIcon(icon_71c24823b4ee33889b7b0de11f63a1aa);
+            
+    
+            var marker_ca56dcb2ee627bada1a70a967ba62288 = L.marker(
+                [32.560652, 130.52169],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_da9d28f7dfadf0a409dbe640759263f0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_55afb82b41963ef0fea832a43def9508 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d86892a44584de97fc608d5f9a8b9f9d = $(`<div id="html_d86892a44584de97fc608d5f9a8b9f9d" style="width: 100.0%; height: 100.0%;"><b>九州_河川敷地点08</b><br>親調査地</div>`)[0];
+                popup_55afb82b41963ef0fea832a43def9508.setContent(html_d86892a44584de97fc608d5f9a8b9f9d);
+            
+        
+
+        marker_ca56dcb2ee627bada1a70a967ba62288.bindPopup(popup_55afb82b41963ef0fea832a43def9508)
+        ;
+
+        
+    
+    
+            marker_ca56dcb2ee627bada1a70a967ba62288.bindTooltip(
+                `<div>
+                     九州_河川敷地点08
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ca56dcb2ee627bada1a70a967ba62288.setIcon(icon_da9d28f7dfadf0a409dbe640759263f0);
+            
+    
+            var marker_8d0fd94637ff2fa8a5c1c21a43c3956b = L.marker(
+                [38.098356, 140.421905],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_021ed8cf5f2e9aba66b24d66bce0d540 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1eeafde27d005a222db7c15f3594fbbb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8b97f206fc5b13aa69d23609963445ca = $(`<div id="html_8b97f206fc5b13aa69d23609963445ca" style="width: 100.0%; height: 100.0%;"><b>東北_丘陵地点09</b><br>親調査地</div>`)[0];
+                popup_1eeafde27d005a222db7c15f3594fbbb.setContent(html_8b97f206fc5b13aa69d23609963445ca);
+            
+        
+
+        marker_8d0fd94637ff2fa8a5c1c21a43c3956b.bindPopup(popup_1eeafde27d005a222db7c15f3594fbbb)
+        ;
+
+        
+    
+    
+            marker_8d0fd94637ff2fa8a5c1c21a43c3956b.bindTooltip(
+                `<div>
+                     東北_丘陵地点09
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8d0fd94637ff2fa8a5c1c21a43c3956b.setIcon(icon_021ed8cf5f2e9aba66b24d66bce0d540);
+            
+    
+            var marker_d670440c458d21dee74dba47ecc549db = L.marker(
+                [38.132919, 140.065401],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_3dada3daea4044a048e1a305c2b41fca = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5234254e9422078309f568da7f1f6117 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c13f165bd4d1639906850738abcec01f = $(`<div id="html_c13f165bd4d1639906850738abcec01f" style="width: 100.0%; height: 100.0%;"><b>東北_海岸地点10</b><br>親調査地</div>`)[0];
+                popup_5234254e9422078309f568da7f1f6117.setContent(html_c13f165bd4d1639906850738abcec01f);
+            
+        
+
+        marker_d670440c458d21dee74dba47ecc549db.bindPopup(popup_5234254e9422078309f568da7f1f6117)
+        ;
+
+        
+    
+    
+            marker_d670440c458d21dee74dba47ecc549db.bindTooltip(
+                `<div>
+                     東北_海岸地点10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d670440c458d21dee74dba47ecc549db.setIcon(icon_3dada3daea4044a048e1a305c2b41fca);
+            
+    
+            var marker_7819a07d92e91f70e5caabf4b51ce8bb = L.marker(
+                [35.86537938187119, 137.9354406550274],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_6ab695298992ffbe8be88f49e39841fd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8d0fe6f885633288214f982dd3647370 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c591b2f6f3177bbe80d91a74de3defc6 = $(`<div id="html_c591b2f6f3177bbe80d91a74de3defc6" style="width: 100.0%; height: 100.0%;"><b>上伊那_信州大学伊那キャンパス</b><br>親調査地</div>`)[0];
+                popup_8d0fe6f885633288214f982dd3647370.setContent(html_c591b2f6f3177bbe80d91a74de3defc6);
+            
+        
+
+        marker_7819a07d92e91f70e5caabf4b51ce8bb.bindPopup(popup_8d0fe6f885633288214f982dd3647370)
+        ;
+
+        
+    
+    
+            marker_7819a07d92e91f70e5caabf4b51ce8bb.bindTooltip(
+                `<div>
+                     上伊那_信州大学伊那キャンパス
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7819a07d92e91f70e5caabf4b51ce8bb.setIcon(icon_6ab695298992ffbe8be88f49e39841fd);
+            
+    
+            var marker_ba459edc4149becbe1057bc5f608abe6 = L.marker(
+                [35.82761555009927, 137.95468957130237],
+                {
+}
+            ).addTo(map_f6c10f2779340abc87730063c6cb7557);
+        
+    
+            var icon_2b9d68016f250ea17bfa92c5e974e62a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d3bddc15e431240ab1304e48238cc563 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_85c2d0b4390ca154b7e92124343c8bc9 = $(`<div id="html_85c2d0b4390ca154b7e92124343c8bc9" style="width: 100.0%; height: 100.0%;"><b>中部_伊那市</b><br>親調査地</div>`)[0];
+                popup_d3bddc15e431240ab1304e48238cc563.setContent(html_85c2d0b4390ca154b7e92124343c8bc9);
+            
+        
+
+        marker_ba459edc4149becbe1057bc5f608abe6.bindPopup(popup_d3bddc15e431240ab1304e48238cc563)
+        ;
+
+        
+    
+    
+            marker_ba459edc4149becbe1057bc5f608abe6.bindTooltip(
+                `<div>
+                     中部_伊那市
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ba459edc4149becbe1057bc5f608abe6.setIcon(icon_2b9d68016f250ea17bfa92c5e974e62a);
+            
+</script>
+</html>
