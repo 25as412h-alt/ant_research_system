@@ -17,6 +17,21 @@ class Species:
             db_connection: データベース接続オブジェクト
         """
         self.conn = db_connection
+        self._ensure_ja_name_column_exists()
+
+    def _ensure_ja_name_column_exists(self) -> None:
+        """
+        species_master テーブルに ja_name カラムが存在するかをチェックし、未存在の場合は追加する
+        """
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute("PRAGMA table_info(species_master)")
+            columns = [row[1] for row in cursor.fetchall()]
+            if 'ja_name' not in columns:
+                cursor.execute("ALTER TABLE species_master ADD COLUMN ja_name TEXT")
+                self.conn.commit()
+        except Exception:
+            self.conn.rollback()
     
     def create(self, name: str, 
                genus: Optional[str] = None,

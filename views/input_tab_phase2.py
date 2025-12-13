@@ -496,11 +496,11 @@ def create_ant_data_tab(parent, conn, models):
     new_species_name_var = tk.StringVar()
     ttk.Entry(new_species_frame, textvariable=new_species_name_var, width=30).grid(
         row=0, column=1, sticky='w', padx=5, pady=3)
-ttk.Label(new_species_frame, text='種名(和名):').grid(row=0, column=2, sticky='w', pady=3)
-new_species_ja_name_var = tk.StringVar()
-ttk.Entry(new_species_frame, textvariable=new_species_ja_name_var, width=30).grid(
-    row=0, column=3, sticky='w', padx=5, pady=3)
-    
+    ttk.Label(new_species_frame, text='種名(和名):').grid(row=0, column=2, sticky='w', pady=3)
+    new_species_ja_name_var = tk.StringVar()
+    ttk.Entry(new_species_frame, textvariable=new_species_ja_name_var, width=30).grid(
+        row=0, column=3, sticky='w', padx=5, pady=3)
+
     ttk.Label(new_species_frame, text='属名:').grid(row=1, column=0, sticky='w', pady=3)
     new_species_genus_var = tk.StringVar()
     ttk.Entry(new_species_frame, textvariable=new_species_genus_var, width=30).grid(
