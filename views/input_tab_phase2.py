@@ -476,7 +476,10 @@ def create_ant_data_tab(parent, conn, models):
     def update_species_list():
         """種名リストを更新"""
         species_list = species_model.get_all()
-        species_dict = {s['name']: s['id'] for s in species_list}
+        def label_for(s):
+            ja = s.get('ja_name') or ''
+            return f"{s['name']} ({ja})" if ja else s['name']
+        species_dict = {label_for(s): s['id'] for s in species_list}
         species_combo['values'] = list(species_dict.keys())
         return species_dict
     
@@ -493,6 +496,10 @@ def create_ant_data_tab(parent, conn, models):
     new_species_name_var = tk.StringVar()
     ttk.Entry(new_species_frame, textvariable=new_species_name_var, width=30).grid(
         row=0, column=1, sticky='w', padx=5, pady=3)
+ttk.Label(new_species_frame, text='種名(和名):').grid(row=0, column=2, sticky='w', pady=3)
+new_species_ja_name_var = tk.StringVar()
+ttk.Entry(new_species_frame, textvariable=new_species_ja_name_var, width=30).grid(
+    row=0, column=3, sticky='w', padx=5, pady=3)
     
     ttk.Label(new_species_frame, text='属名:').grid(row=1, column=0, sticky='w', pady=3)
     new_species_genus_var = tk.StringVar()
@@ -511,21 +518,24 @@ def create_ant_data_tab(parent, conn, models):
             if not name:
                 messagebox.showwarning('入力エラー', '種名を入力してください')
                 return
-            
+            ja_name = new_species_ja_name_var.get().strip() or None
             genus = new_species_genus_var.get().strip() or None
             subfamily = new_species_subfamily_var.get().strip() or None
             
-            species_id = species_model.create(name=name, genus=genus, subfamily=subfamily)
+            species_id = species_model.create(name=name, ja_name=ja_name, genus=genus, subfamily=subfamily)
             
-            messagebox.showinfo('成功', f'種「{name}」を登録しました')
+            display_label = f"{name} ({ja_name})" if ja_name else name
+            messagebox.showinfo('成功', f'種「{name}」(和名: {ja_name or "未設定"}) を登録しました')
             
             # リストを更新して選択
             nonlocal species_dict
             species_dict = update_species_list()
-            species_var.set(name)
+            display_label = f"{name} ({ja_name})" if ja_name else name
+            species_var.set(display_label)
             
             # フォームをクリア
             new_species_name_var.set('')
+            new_species_ja_name_var.set('')
             new_species_genus_var.set('')
             new_species_subfamily_var.set('')
             

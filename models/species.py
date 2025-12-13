@@ -21,6 +21,7 @@ class Species:
     def create(self, name: str, 
                genus: Optional[str] = None,
                subfamily: Optional[str] = None,
+               ja_name: Optional[str] = None,
                remarks: Optional[str] = None) -> int:
         """
         種を新規登録
@@ -29,6 +30,7 @@ class Species:
             name: 種名（学名）
             genus: 属名
             subfamily: 亜科名
+            ja_name: 和名
             remarks: 備考
             
         Returns:
@@ -38,9 +40,9 @@ class Species:
         
         try:
             cursor.execute("""
-                INSERT INTO species_master (name, genus, subfamily, remarks)
-                VALUES (?, ?, ?, ?)
-            """, (name, genus, subfamily, remarks))
+                INSERT INTO species_master (name, ja_name, genus, subfamily, remarks)
+                VALUES (?, ?, ?, ?, ?)
+            """, (name, ja_name, genus, subfamily, remarks))
             
             self.conn.commit()
             return cursor.lastrowid
@@ -262,7 +264,8 @@ class Species:
     
     def get_or_create(self, name: str, 
                       genus: Optional[str] = None,
-                      subfamily: Optional[str] = None) -> int:
+                      subfamily: Optional[str] = None,
+                      ja_name: Optional[str] = None) -> int:
         """
         種を取得、存在しない場合は作成
         
@@ -280,7 +283,7 @@ class Species:
             return existing['id']
         
         # 存在しない場合は作成
-        return self.create(name, genus, subfamily)
+        return self.create(name, genus, subfamily, ja_name)
     
     def count(self) -> int:
         """

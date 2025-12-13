@@ -251,6 +251,21 @@ class Validators:
             return False, None, f"{field_name}は{max_length}文字以内で入力してください"
     
     @staticmethod
+    def validate_ja_name(value: str) -> Tuple[bool, Optional[str], str]:
+        """
+        和名（ja_name）のバリデーション
+        任意入力だが、長さ制約のみ適用
+        """
+        if value is None or value.strip() == "":
+            return True, None, ""
+        ja = value.strip()
+        max_length = 100
+        if len(ja) <= max_length:
+            return True, ja, ""
+        else:
+            return False, None, f"和名は{max_length}文字以内で入力してください"
+    
+    @staticmethod
     def validate_required(value: str, field_name: str = "項目") -> Tuple[bool, str]:
         """
         必須項目のバリデーション
