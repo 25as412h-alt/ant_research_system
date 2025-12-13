@@ -1,118 +1,124 @@
-/* Lightweight React typings workaround for environments without @types/react.
-   We declare a global React to satisfy the TS compiler in this sandbox. */
 declare var React: any;
 
-// データの1行を表す型定義。実際のプロジェクトでは項目を適宜拡張してください。
 type DataRow = {
-  id: string;
+  id: string | number;
   name: string;
   value: string;
-  // ... 他のフィールド
+  // 追加フィールドがあればここに定義
 };
 
-type Props = {
-  data: DataRow[];
-  onUpdate: (rows: DataRow[]) => void;
+type DataInputTabProps = {
+  initialData?: DataRow[];
+  data?: DataRow[];
+  onUpdate?: (rows: DataRow[]) => void;
 };
 
-export const DataInputTab = ({ data, onUpdate }: Props) => {
-  // 編集状態を管理
-  const [editingId, setEditingId] = React.useState(null);
-  const [editRow, setEditRow] = React.useState(null);
+export const DataInputTab = ({ initialData, data, onUpdate }: DataInputTabProps) => {
+  const [rows, setRows] = React.useState([] as DataRow[]);
+  const [editingId, setEditingId] = React.useState(null as string | number | null);
+  const [editRow, setEditRow] = React.useState(null as DataRow | null);
+  const [error, setError] = React.useState(null as string | null);
+
+  // 外部データ変更に追従
+  React.useEffect(() => {
+    const source = data ?? initialData ?? [];
+    setRows(source);
+  }, [data, initialData]);
 
   const startEdit = (row: DataRow) => {
     setEditingId(row.id);
     setEditRow({ ...row });
+    setError(null);
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setEditRow(null);
+    setError(null);
   };
 
-  const onChange = (field: keyof DataRow, value: string) => {
+  const onChangeEdit = (field: keyof DataRow, value: string) => {
     if (!editRow) return;
     setEditRow({ ...editRow, [field]: value });
   };
 
   const saveEdit = async () => {
-    if (!editRow || !editingId) return;
-    // 最小のエラーハンドリング
+    if (!editRow || editingId == null) return;
     try {
-      const updated = await fetch(`/api/data/${editingId}`, {
+      const resp = await fetch(`/api/data/${editingId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editRow),
-      }).then(res => {
-        if (!res.ok) {
-          throw new Error(`Request failed with status ${res.status}`);
-        }
-        return res.json();
       });
-
-      const next = data.map(d => (d.id === updated.id ? updated : d));
-      onUpdate(next);
-      setEditingId(null);
-      setEditRow(null);
+      if (!resp.ok) {
+        throw new Error(`Update failed: ${resp.status} ${resp.statusText}`);
+      }
+      const updated: DataRow = await resp.json();
+      const nextRows = rows.map((r) => (r.id === updated.id ? updated : r));
+      setRows(nextRows);
+      if (onUpdate) onUpdate(nextRows);
+      cancelEdit();
     } catch (err) {
-      // 本番環境ではトースト通知等のUXを追加してください
-      console.error('データ編集の保存に失敗しました', err);
+      console.error(err);
+      setError('データの更新に失敗しました');
     }
   };
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Value</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map(row => {
-          const isEditing = editingId === row.id;
-          return (
-            <tr key={row.id}>
-              {isEditing ? (
-                <>
-                  <td>{row.id}</td>
-                  <td>
+    <div>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Value</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => {
+            const isEditing = editingId === row.id;
+            return (
+              <tr key={row.id}>
+                <td>{row.id}</td>
+                <td>
+                  {isEditing ? (
                     <input
                       value={editRow?.name ?? ''}
-                      onChange={e => onChange('name', e.target.value)}
+                      onChange={(e) => onChangeEdit('name', e.target.value)}
                     />
-                  </td>
-                  <td>
+                  ) : (
+                    row.name
+                  )}
+                </td>
+                <td>
+                  {isEditing ? (
                     <input
                       value={editRow?.value ?? ''}
-                      onChange={e => onChange('value', e.target.value)}
+                      onChange={(e) => onChangeEdit('value', e.target.value)}
                     />
-                  </td>
-                  <td>
-                    <button onClick={saveEdit}>Save</button>
-                    <button onClick={cancelEdit}>Cancel</button>
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td>{row.id}</td>
-                  <td>{row.name}</td>
-                  <td>{row.value}</td>
-                  <td>
+                  ) : (
+                    row.value
+                  )}
+                </td>
+                <td>
+                  {isEditing ? (
+                    <>
+                      <button onClick={saveEdit}>Save</button>
+                      <button onClick={cancelEdit}>Cancel</button>
+                    </>
+                  ) : (
                     <button onClick={() => startEdit(row)}>Edit</button>
-                  </td>
-                </>
-              )}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
 export default DataInputTab;
-
-
